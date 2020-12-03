@@ -40,8 +40,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping(BASE_URI)
 @Tag(name = API_TAG_NAME, description = API_TAG_DESC)
-class Controller(private val service: Service, private val proxyService: DeliverymomentClientService,
-                 private val restService: RestTemplateClient,
+class Controller(private val service: Service, private val momentservice: DeliverymomentClientService,
+                 private val postService: RestTemplateClient,
                  private val validator: BaseValidator) {
 
     val logger = logger()
@@ -85,7 +85,7 @@ class Controller(private val service: Service, private val proxyService: Deliver
         var records = mutableListOf<Any>()
 
         return ResponseEntity.ok(ServiceResponse("200",
-                "SUCCESS", proxyService.getDeliveryMomentAll(storeNumber, streamNumber,
+                "SUCCESS", momentservice.getdeliverymomentall(storeNumber, streamNumber,
                                                            schemaName,deliveryDateTime, orderDateTime,
                 fillDateTime, startFillTime, deliveryDateFrom,
                 deliveryDateTo, orderDateFrom, orderDateTo,
@@ -122,7 +122,7 @@ class Controller(private val service: Service, private val proxyService: Deliver
     )
     @RequestMapping(value = [POST_PUT_DELETE_URI], method = [RequestMethod.POST], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun post(@RequestBody model: DeliveryMomentModel): ResponseEntity<ServiceResponse> {
-        val  response= restService.postForm(model)
+        val  response= postService.postForm(model)
         return if (response == null) {
             ResponseEntity.ok(ServiceResponse("400",
                     "Failure", "Delivery Moment already exists for this period"))
@@ -143,7 +143,7 @@ class Controller(private val service: Service, private val proxyService: Deliver
     )
     @RequestMapping(value = [POST_PUT_DELETE_URI], method = [RequestMethod.PUT], produces = [MediaType.APPLICATION_JSON_VALUE])
     fun put(@RequestBody model: DeliveryMomentModel): ResponseEntity<ServiceResponse> {
-        val  response = restService.putForm(model)
+        val  response = postService.putForm(model)
         return if (response == null) {
             ResponseEntity.ok(ServiceResponse("400",
                     "Failure", "Delivery Moment already exists for this period"))
@@ -166,7 +166,7 @@ class Controller(private val service: Service, private val proxyService: Deliver
     fun delete(@PathVariable id: String): ResponseEntity<ServiceResponse> {
 //        service.delete(id)
         println("Call Function")
-        restService.delForm(id)
+        postService.delForm(id)
         println("Out of function")
         return ResponseEntity.ok(ServiceResponse("200",
                 "SUCCESS", "Data Successfully Deleted"))

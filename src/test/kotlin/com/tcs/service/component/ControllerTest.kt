@@ -2,7 +2,6 @@ package com.tcs.service.component
 
 
 import com.nhaarman.mockito_kotlin.whenever
-import com.tcs.service.constant.URLPath
 import com.tcs.service.constant.URLPath.BASE_URI
 import com.tcs.service.constant.URLPath.ENTITY_RESPONSE_JSON_PATH
 import com.tcs.service.constant.URLPath.GET_ALL_URI
@@ -106,18 +105,6 @@ class ControllerTest: BaseTest() {
 //                {
 //                    contentType = MediaType.APPLICATION_JSON
 //                }.andExpect { status { isOk } }.andReturn()
-
-    var expected = "{\n" +
-            "    \"responseCode\": \"200\",\n" +
-            "    \"responseDescription\": \"SUCCESS\",\n" +
-            "    \"response\": \"Data Successfully Updated\"\n" +
-            "}"
-    var result: MvcResult =
-            mockMvc.put(BASE_URI + GET_ALL_URI )
-            {
-                contentType = MediaType.APPLICATION_JSON
-                content = getBodyJson(URLPath.PUT_REQUEST_BODY)
-            }.andExpect { status { isOk } }.andReturn()
 ////        JSONAssert.assertEquals(expected, result.response.contentAsString, false)
 ////        JSONAssert.assertEquals(expected, result.response.contentAsString, false )
 //        assert(true)

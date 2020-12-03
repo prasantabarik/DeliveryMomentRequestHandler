@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.tcs.service.constant.URLPath.DEL_MOMENT_CRUD
 import com.tcs.service.model.DeliveryMomentModel
 import com.tcs.service.utility.Utility
 import org.apache.logging.log4j.kotlin.logger
@@ -17,10 +16,10 @@ import org.springframework.data.mongodb.core.query.isEqualTo
 
 @Service
 class DeliverymomentClientService : DeliveryMoment<DeliveryMomentModel> {
-//    val logger = logger()
+    val logger = logger()
 //    private val basePath = "http://deliverymomentcrud-edppublic-deliverymomentcrud-dev.59ae6b648ca3437aae3a.westeurope.aksapp.io/api/v1/deliveryMoment-Crud-service"
-//     private val basePath = "http://localhost:3500/v1.0/invoke/deliverymomentcrud.edppublic-deliverymomentcrud-dev/method/api/v1/deliveryMoment-Crud-service"
-    override fun getDeliveryMomentAll(storeNumber: Long?, StreamNumber: Int?,
+     private val basePath = "http://localhost:3500/v1.0/invoke/deliverymomentcrud.edppublic-deliverymomentcrud-dev/method/api/v1/deliveryMoment-Crud-service"
+    override fun getdeliverymomentall(storeNumber: Long?, StreamNumber: Int?,
                                       schemaName: String?,deliveryDateTime:String?,orderDateTime:String?,
                                       fillDateTime:String?,
                                       startFillTime:String?, deliveryDateFrom:String?, deliveryDateTo:String?,
@@ -35,16 +34,18 @@ class DeliverymomentClientService : DeliveryMoment<DeliveryMomentModel> {
                 && startFillTime == null && startFillTimeFrom == null && startFillTimeTo == null && orderDateTime == null && orderDateFrom == null && orderDateTo == null
                 && logisticGroupNumber== null && fillDateTime == null && fillDateFrom == null && fillDateTo == null
                 && mainDeliveryFlag == null){
-            return Utility.convert("$DEL_MOMENT_CRUD/model", DeliveryMomentModel(), mapParams)
+            return Utility.convert("$basePath/model", DeliveryMomentModel(), mapParams)
         }
 
         if( storeNumber != null) {
+//
             mapParams.put("storeNumber", storeNumber.toString());
         }
 
         if( StreamNumber != null) {
             mapParams.put("streamNumber", StreamNumber.toString());
         }
+
 
         if( schemaName != null) {
             mapParams.put("schemaName", schemaName);
@@ -96,23 +97,23 @@ class DeliverymomentClientService : DeliveryMoment<DeliveryMomentModel> {
         }
         println("MAP PARAMS")
         println(mapParams)
-        return Utility.convert("$DEL_MOMENT_CRUD/model", DeliveryMomentModel(), mapParams)
+        return Utility.convert("$basePath/model", DeliveryMomentModel(), mapParams)
     }
-//    companion object {
-//
-//        fun convertList(jsonObject: JSONObject): List<DeliveryMomentModel> {
-//            return when {
-//                jsonObject.has("response") -> {
-//                    val mapper = ObjectMapper().registerKotlinModule()
-//                    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
-//                    mapper.readValue<List<DeliveryMomentModel>>(jsonObject["response"].toString(),
-//                            object : TypeReference<List<DeliveryMomentModel>>() {})
-//                }
-//                else -> {
-//                    listOf()
-//                }
-//            }
-//        }
-//    }
+    companion object {
+
+        fun convertList(jsonObject: JSONObject): List<DeliveryMomentModel> {
+            return when {
+                jsonObject.has("response") -> {
+                    val mapper = ObjectMapper().registerKotlinModule()
+                    mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+                    mapper.readValue<List<DeliveryMomentModel>>(jsonObject["response"].toString(),
+                            object : TypeReference<List<DeliveryMomentModel>>() {})
+                }
+                else -> {
+                    listOf()
+                }
+            }
+        }
+    }
 
 }
