@@ -13,7 +13,9 @@ object URLPath {
     const val POST_RESPONSE_JSON_PATH = "./src/test/resources/contracts/jsons/postDeliveryMoment.json"
     const val ENTITY_RESPONSE_JSON_PATH = "./src/test/resources/contracts/jsons/postJsonEntity.json"
     const val SAMPLE_CONTRACT_JSON_PATH = "./src/test/resources/contracts/jsons/contract-sample-data.json"
-
-
+//    const val DEL_MOMENT_CRUD = "http://localhost:3500/v1.0/invoke/deliverymomentcrud.edppublic-deliverymomentcrud-dev/method/api/v1/deliveryMoment-Crud-service"
+//    const val GET_REF_DATA = "http://localhost:3500/v1.0/invoke/getrefdata.edppublic-getrefdata-dev/method/api/v1/getReferenceData"
+    const val DEL_MOMENT_CRUD = "http://localhost:8081/api/v1/deliveryMoment-Crud-service"
+    const val GET_REF_DATA = "http://localhost:8082/api/v1/getReferenceData"
 
 }

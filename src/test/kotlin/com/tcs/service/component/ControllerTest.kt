@@ -1,7 +1,9 @@
 package com.tcs.service.component
 
 
+import com.ahold.commerce.config.getBodyJson
 import com.nhaarman.mockito_kotlin.whenever
+import com.tcs.service.constant.URLPath
 import com.tcs.service.constant.URLPath.BASE_URI
 import com.tcs.service.constant.URLPath.ENTITY_RESPONSE_JSON_PATH
 import com.tcs.service.constant.URLPath.GET_ALL_URI
@@ -40,10 +42,10 @@ class ControllerTest: BaseTest() {
     lateinit var service: Service
 
     @MockBean
-    lateinit var momentservice: DeliverymomentClientService
+    lateinit var proxyService: DeliverymomentClientService
 
     @MockBean
-    lateinit var postService: RestTemplateClient
+    lateinit var restService: RestTemplateClient
 
 
 
@@ -53,13 +55,14 @@ class ControllerTest: BaseTest() {
     @BeforeEach
     fun setup() {
         whenever(service.getById(id = dataId)).thenAnswer { getModel() }
-        whenever(momentservice.getdeliverymomentall(storeNumber, streamNumber,
+        whenever(proxyService.getDeliveryMomentAll(storeNumber, streamNumber,
                 schemaName,deliveryDateTime, orderDateTime,
                 fillDateTime, startFillTime, deliveryDateFrom,
                 deliveryDateTo, orderDateFrom, orderDateTo,
                 fillDateFrom, fillDateTo,
                 startFillTimeFrom, startFillTimeTo,logisticGroupNumber, mainDeliveryFlag)).thenAnswer { getModel() }
-        whenever(postService.postForm(model)).thenAnswer { getModel() }
+        whenever(restService.postForm(model)).thenAnswer { getModel() }
+        whenever(restService.putForm(model)).thenAnswer { getModel() }
 //        whenever(service.getById(id = dataId)).thenAnswer { getModel() }
 //        whenever(service.getById(id = dataId)).thenAnswer { getModel() }
 
@@ -81,33 +84,49 @@ class ControllerTest: BaseTest() {
     }
 
     @Test
-    fun `should respond with parameters`(){
+    fun `get function`(){
         var expected = File(GET_RESPONSE_JSON_PATH).readText(Charsets.UTF_8)
         var result: MvcResult =
-                mockMvc.get(BASE_URI + GET_ALL_URI, storeNumber, streamNumber,
-                        schemaName,deliveryDateTime, orderDateTime,
-                        fillDateTime, startFillTime, deliveryDateFrom,
-                        deliveryDateTo, orderDateFrom, orderDateTo,
-                        fillDateFrom, fillDateTo,
-                        startFillTimeFrom, startFillTimeTo,logisticGroupNumber, mainDeliveryFlag)
+                mockMvc.get(BASE_URI + GET_ALL_URI)
                 {
                     contentType = MediaType.APPLICATION_JSON
+                    param("storeNumber","7005")
+                    param("streamNumber","1")
+                    param("deliveryDateTime","2020-12-02 18:30:00")
                 }.andExpect { status { isOk } }.andReturn()
-//        JSONAssert.assertEquals(expected, result.response.contentAsString, false)
+
         JSONAssert.assertEquals(expected, result.response.contentAsString, false )
     }
 
-//    @Test
-//    fun `should respond with post msg`(){
-//        var expected = File(POST_RESPONSE_JSON_PATH).readText(Charsets.UTF_8)
-//        var result: MvcResult =
-//                mockMvc.post(BASE_URI + GET_ALL_URI, File(ENTITY_RESPONSE_JSON_PATH))
-//                {
-//                    contentType = MediaType.APPLICATION_JSON
-//                }.andExpect { status { isOk } }.andReturn()
-////        JSONAssert.assertEquals(expected, result.response.contentAsString, false)
-////        JSONAssert.assertEquals(expected, result.response.contentAsString, false )
-//        assert(true)
-//    }
+    @Test
+    fun `should respond with post msg`(){
+        var expected = File(POST_RESPONSE_JSON_PATH).readText(Charsets.UTF_8)
+        var result: MvcResult =
+                mockMvc.post(BASE_URI + GET_ALL_URI)
+                {
+                    contentType = MediaType.APPLICATION_JSON
+                    content = getBodyJson(ENTITY_RESPONSE_JSON_PATH)
+                }.andExpect { status { isOk } }.andReturn()
 
+        JSONAssert.assertEquals(expected, result.response.contentAsString, false )
+
+    }
+
+    @Test
+    fun `should respond with put msg`(){
+        var expected = File(POST_RESPONSE_JSON_PATH).readText(Charsets.UTF_8)
+        var result: MvcResult =
+                mockMvc.put(BASE_URI + GET_ALL_URI)
+                {
+                    contentType = MediaType.APPLICATION_JSON
+                    content = getBodyJson(ENTITY_RESPONSE_JSON_PATH)
+                }.andExpect { status { isOk } }.andReturn()
+
+        println("EXPECTED")
+        println(expected)
+
+        println("RESULT RESPONSE")
+        println(result.response.contentAsString)
+        JSONAssert.assertEquals(expected, result.response.contentAsString, false )
+    }
 }

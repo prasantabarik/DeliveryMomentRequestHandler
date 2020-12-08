@@ -2,5 +2,5 @@
 {
   "responseCode": "400",
   "responseDescription": "Failure",
-  "response": "Something went wrong in inserting Delivery Moment"
+  "response": "Delivery Moment already exists for this period"
 }

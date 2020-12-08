@@ -48,10 +48,7 @@ object Utility {
                 mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                 println(objectType)
                 when (objectType) {
-//
                     is DeliveryChannel -> {
-                //        println("Hello again")
-//                      mapper.readValue<StoreCluster>(jsonObject["response"].toString(), StoreCluster::class.java)
                         mapper.readValue(jsonObject["response"].toString(), Array<DeliveryChannel>::class.java).toMutableList()
                     }
                     else -> {
@@ -64,21 +61,18 @@ object Utility {
             }
         }
     }
-    fun convertwo(url: String, objectType: Any, params: MutableMap<String, String>): List<LogisticChannel>? {
+    fun convertTwo(url: String, objectType: Any, params: MutableMap<String, String>): List<LogisticChannel>? {
 
         val jsonObject = get(url = url, params = params).jsonObject
         println(jsonObject)
         return when (true) {
             true -> {
-         //       println("Hi")
                 val mapper = ObjectMapper().registerKotlinModule()
                 mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                 println(objectType)
                 when (objectType) {
-//
+
                     is LogisticChannel -> {
-                //        println("Hello again")
-//                      mapper.readValue<StoreCluster>(jsonObject["response"].toString(), StoreCluster::class.java)
                         mapper.readValue(jsonObject["response"].toString(), Array<LogisticChannel>::class.java).toMutableList()
                     }
                     else -> {
@@ -93,21 +87,17 @@ object Utility {
     }
 
     // for del schedule
-    fun converthree(url: String, objectType: Any, params: MutableMap<String, String>): List<DeliveryScheduleModel>? {
+    fun convertThree(url: String, objectType: Any, params: MutableMap<String, String>): List<DeliveryScheduleModel>? {
 
         val jsonObject = get(url = url, params = params).jsonObject
         println(jsonObject)
         return when (true){
            true -> {
-               // println("Hi")
                 val mapper = ObjectMapper().registerKotlinModule()
                 mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
                 println(objectType)
                 when (objectType) {
-//
                     is DeliveryScheduleModel -> {
-                  //      println("Hello again")
-//                      mapper.readValue<StoreCluster>(jsonObject["response"].toString(), StoreCluster::class.java)
                         mapper.readValue(jsonObject["response"].toString(), Array<DeliveryScheduleModel>::class.java).toMutableList()
                     }
                     else -> {
